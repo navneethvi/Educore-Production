@@ -1,8 +1,8 @@
 # Starter Kit default values for cert-manager.
 
 # CRDs are required usually
-installCRDs: false
+# installCRDs: false
 
 # Required only if you want to monitor cert-manager activity
-prometheus:
-  enabled: false
+# prometheus:
+#   enabled: false
