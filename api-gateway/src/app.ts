@@ -25,7 +25,8 @@ import chatRouter from "./middleware/chat-route";
 app.use(apiLimiter);
 
 app.get("/", (req, res) => {
-  res.json("Hellooooooo");
+  // res.json("Hellooooooo");
+  res.json("Hello from api gateway")
 });
 
 app.use("/api/auth", authRouter);
