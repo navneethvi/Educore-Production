@@ -1,40 +1,40 @@
-apiVersion: apps/v1
-kind: StatefulSet
-metadata:
-  name: zookeeper
-spec:
-  serviceName: "zookeeper"
-  replicas: 1
-  selector:
-    matchLabels:
-      app: zookeeper
-  template:
-    metadata:
-      labels:
-        app: zookeeper
-    spec:
-      containers:
-        - name: zookeeper
-          image: wurstmeister/zookeeper
-          ports:
-            - containerPort: 2181
-          volumeMounts:
-            - name: zookeeper-data
-              mountPath: /data
-            - name: zookeeper-datalog
-              mountPath: /datalog
-  volumeClaimTemplates:
-    - metadata:
-        name: zookeeper-data
-      spec:
-        accessModes: ["ReadWriteOnce"]
-        resources:
-          requests:
-            storage: 5Gi
-    - metadata:
-        name: zookeeper-datalog
-      spec:
-        accessModes: ["ReadWriteOnce"]
-        resources:
-          requests:
-            storage: 5Gi
+# apiVersion: apps/v1
+# kind: StatefulSet
+# metadata:
+#   name: zookeeper
+# spec:
+#   serviceName: "zookeeper"
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: zookeeper
+#   template:
+#     metadata:
+#       labels:
+#         app: zookeeper
+#     spec:
+#       containers:
+#         - name: zookeeper
+#           image: wurstmeister/zookeeper
+#           ports:
+#             - containerPort: 2181
+#           volumeMounts:
+#             - name: zookeeper-data
+#               mountPath: /data
+#             - name: zookeeper-datalog
+#               mountPath: /datalog
+#   volumeClaimTemplates:
+#     - metadata:
+#         name: zookeeper-data
+#       spec:
+#         accessModes: ["ReadWriteOnce"]
+#         resources:
+#           requests:
+#             storage: 5Gi
+#     - metadata:
+#         name: zookeeper-datalog
+#       spec:
+#         accessModes: ["ReadWriteOnce"]
+#         resources:
+#           requests:
+#             storage: 5Gi
