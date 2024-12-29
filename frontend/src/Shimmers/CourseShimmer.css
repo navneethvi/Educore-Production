@@ -1,0 +1,27 @@
+@layer utilities {
+    .shimmer-effect {
+      @apply relative overflow-hidden bg-gray-200; /* Set up the base look of the shimmer effect */
+    }
+  
+    .shimmer-effect::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -150%;
+      width: 150%;
+      height: 100%;
+      background: linear-gradient(120deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0) 100%);
+      transform: skewX(-25deg);
+      animation: shimmer 2s infinite;
+    }
+  
+    @keyframes shimmer {
+      0% {
+        left: -150%;
+      }
+      100% {
+        left: 150%;
+      }
+    }
+  }
+  
