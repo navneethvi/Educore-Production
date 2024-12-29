@@ -12,7 +12,7 @@ class AdminController {
   public signin = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const { email, password } = req.body;
-      console.log("Admin req body ===>", req.body);
+      // console.log("Admin req body ===>", req.body);
 
       if (!email || !password) {
         return res
