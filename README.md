@@ -6,4 +6,4 @@ Educore is a powerful e-learning platform designed to connect students and tutor
 
 ## Architecture Diagram
 
-![alt text](https://github.com/navneethvi/Educore-Production/blob/main/educore-system (2).png)
+![alt text](https://github.com/navneethvi/Educore-Production/blob/main/educore-system%20(2).png)
