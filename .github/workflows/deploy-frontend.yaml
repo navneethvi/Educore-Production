@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps: 
       - uses: actions/checkout@v3
-      - run: cd frontend &&docker build  --build-arg VITE_STRIPE_KEY=pk_test_51QI5p9BTL1d0xNoWPxR6Weuv698sTOCa1hdcU0cuYBFJDCWp5OTSxVteNPdsceHVAd4c8bg3Ezq1WdBF0SekGlXm00IQElrbJI --build-arg VITE_GOOGLE_CLIENT_ID=225204250762-6rbie7h89mpk50bs5ivtk2tjksq5s0m2.apps.googleusercontent.com -t educore-frontend .
+      - run: cd frontend && docker build  --build-arg VITE_STRIPE_KEY=pk_test_51QI5p9BTL1d0xNoWPxR6Weuv698sTOCa1hdcU0cuYBFJDCWp5OTSxVteNPdsceHVAd4c8bg3Ezq1WdBF0SekGlXm00IQElrbJI --build-arg VITE_GOOGLE_CLIENT_ID=225204250762-6rbie7h89mpk50bs5ivtk2tjksq5s0m2.apps.googleusercontent.com -t educore-frontend .
       - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
         env: 
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
