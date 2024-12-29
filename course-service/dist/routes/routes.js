@@ -1,0 +1,66 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const multer_1 = __importDefault(require("multer"));
+const common_1 = require("@envy-core/common");
+// import { eitherOrAuth } from "@envy-core/common";
+const upload = (0, multer_1.default)({ storage: multer_1.default.memoryStorage() });
+const category_controller_1 = __importDefault(require("../controllers/category.controller"));
+const course_controller_1 = __importDefault(require("../controllers/course.controller"));
+const course_repository_1 = __importDefault(require("../repositories/course.repository"));
+const course_service_1 = __importDefault(require("../services/course.service"));
+const category_repository_1 = __importDefault(require("../repositories/category.repository"));
+const category_model_1 = __importDefault(require("../models/category.model"));
+const course_model_1 = __importDefault(require("../models/course.model"));
+const tutor_model_1 = __importDefault(require("../models/tutor.model"));
+const admin_model_1 = __importDefault(require("../models/admin.model"));
+const student_model_1 = __importDefault(require("../models/student.model"));
+const category_service_1 = __importDefault(require("../services/category.service"));
+const tutor_repository_1 = __importDefault(require("../repositories/tutor.repository"));
+const tutor_service_1 = __importDefault(require("../services/tutor.service"));
+const consumer_service_1 = __importDefault(require("../services/consumer.service"));
+const student_repository_1 = __importDefault(require("../repositories/student.repository"));
+const review_repository_1 = __importDefault(require("../repositories/review.repository"));
+const review_model_1 = __importDefault(require("../models/review.model"));
+const router = (0, express_1.Router)();
+const courseRepository = new course_repository_1.default(course_model_1.default);
+const categoryRepository = new category_repository_1.default(category_model_1.default);
+const tutorRepository = new tutor_repository_1.default(tutor_model_1.default);
+const studentRepository = new student_repository_1.default(student_model_1.default);
+const reviewRepository = new review_repository_1.default(review_model_1.default, tutor_model_1.default, student_model_1.default, course_model_1.default);
+const courseService = new course_service_1.default(courseRepository, tutorRepository, reviewRepository);
+const categoryService = new category_service_1.default(categoryRepository);
+const tutorService = new tutor_service_1.default(tutorRepository);
+const consumerService = new consumer_service_1.default(tutorRepository, studentRepository);
+const categoryController = new category_controller_1.default(categoryService);
+const courseController = new course_controller_1.default(courseService, categoryService, tutorService, consumerService);
+// * Category Routes
+router.post("/add_category", (0, common_1.isAdminLogin)(admin_model_1.default), categoryController.addCategory);
+router.get("/get_categories", categoryController.getCategories);
+router.get("/get_allcategories", categoryController.getAllCategories);
+router.post("/delete_category", (0, common_1.isAdminLogin)(admin_model_1.default), categoryController.deleteCategory);
+// * AWS S3 Routes
+router.get("/get-upload-url", courseController.getS3UploadUrl);
+router.get("/get-presigned-url", courseController.getS3PresignedUrl);
+// * Course Routes
+router.post("/add_course", (0, common_1.isTutorLogin)(tutor_model_1.default), upload.any(), courseController.createCourse);
+router.get("/:tutorId/courses/:status", courseController.getTutorCoursesByStatus);
+router.get("/homepage", courseController.dataForHome);
+router.get("/get_courses/:status", courseController.getAllCoursesForCards);
+router.get("/course_details/:courseId", courseController.getCourseDetails);
+router.post("/:courseId/lesson_details", courseController.getLessonDetails);
+router.patch("/edit_course/:courseId", upload.any(), courseController.editCourse);
+router.patch("/approve_course/:courseId", courseController.approveCourse);
+router.delete("/delete_course/:courseId", courseController.deleteCourse);
+router.get("/fetch_courses", courseController.fetchCourses);
+router.post("/add-review", (0, common_1.isStudentLogin)(student_model_1.default), courseController.createReview);
+router.get("/get-reviews", courseController.getReviewsByCourse);
+router.get("/reviews-home", courseController.getReviewsForHome);
+router.get("/newly-added-course", courseController.getNewlyAddedCourses);
+// * Datas for dashboard
+router.get("/admin-dash", courseController.getDatasForAdminDashboard);
+router.get("/tutor-dash", (0, common_1.isTutorLogin)(tutor_model_1.default), courseController.getDatasForTutorDashboard);
+exports.default = router;

@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: educore-notification-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: notification
+  template:
+    metadata:
+      labels:
+        app: notification
+    spec:
+      containers:
+      - name: notification
+        image: navaneethvinod/educore-notification-service:latest
+        env:
+        - name: GOOGLE_EMAIL
+          valueFrom:
+            secretKeyRef:
+              name: notification-secret
+              key: GOOGLE_EMAIL  
+        - name: GOOGLE_APP_PASS
+          valueFrom:
+            secretKeyRef:
+              name: notification-secret
+              key: GOOGLE_APP_PASS  
+        resources:
+          requests:
+            cpu: "150m"
+            memory: "256Mi"
+          limits:
+            cpu: "200m"
+            memory: "512Mi"
+        ports:
+        - containerPort: 3002
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: notification-svc
+spec:
+  type: ClusterIP
+  selector:
+    app: notification
+  ports:
+  - name: notification
+    protocol: TCP
+    port: 3002
+    targetPort: 3002

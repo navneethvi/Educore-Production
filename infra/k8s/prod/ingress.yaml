@@ -1,0 +1,118 @@
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: ingress-service
+#   annotations:
+#     cert-manager.io/issuer: letsencrypt-nginx
+#     nginx.ingress.kubernetes.io/proxy-http-version: "1.1"
+#     nginx.ingress.kubernetes.io/websocket-services: "chat-svc"
+#     nginx.ingress.kubernetes.io/connection-proxy-header: "keep-alive"
+#     nginx.ingress.kubernetes.io/enable-websocket: "true"
+#     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+#     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+#     kubernetes.io/ingress.class: nginx
+# spec:
+#   ingressClassName: nginx
+#   tls:
+#   - hosts:
+#     - educore.live
+#     secretName: letsencrypt-nginx
+#   rules:
+#   - host: educore.live
+#     http:
+#       paths:
+#       - path: /api/payments/webhook
+#         pathType: Prefix
+#         backend:
+#           service:
+#             name: payment-svc
+#             port:
+#               number: 3005
+#       - path: /api
+#         pathType: Prefix
+#         backend:
+#           service:
+#             name: api-gateway-svc
+#             port:
+#               number: 3000
+#       - path: /chat-socket
+#         pathType: Prefix
+#         backend:
+#           service:
+#             name: chat-svc
+#             port:
+#               number: 3004
+#       - path: /socket.io/
+#         pathType: ImplementationSpecific
+#         backend:
+#           service:
+#             name: chat-svc
+#             port:
+#               number: 3004
+#       - path: /
+#         pathType: Prefix
+#         backend:
+#           service:
+#             name: frontend-svc
+#             port:
+#               number: 5173
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ingress-service
+  annotations:
+    cert-manager.io/issuer: letsencrypt-nginx
+    nginx.ingress.kubernetes.io/proxy-http-version: "1.1"
+    nginx.ingress.kubernetes.io/websocket-services: "chat-svc"
+    nginx.org/websocket-services: "chat-svc"
+    nginx.ingress.kubernetes.io/upgrade: "websocket"
+    nginx.ingress.kubernetes.io/connection-proxy-header: "keep-alive"
+    nginx.ingress.kubernetes.io/enable-websocket: "true"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    kubernetes.io/ingress.class: nginx
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - educore.live
+    secretName: letsencrypt-nginx
+  rules:
+  - host: educore.live
+    http:
+      paths:
+      - path: /api/payments/webhook
+        pathType: Prefix
+        backend:
+          service:
+            name: payment-svc
+            port:
+              number: 3005
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: api-gateway-svc
+            port:
+              number: 3000
+      # - path: /socket.io/
+      #   pathType: ImplementationSpecific
+      #   backend:
+      #     service:
+      #       name: chat-svc
+      #       port:
+      #         number: 3004
+      - path: /chat-socket/?(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: chat-svc
+            port:
+              number: 3004
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend-svc
+            port:
+              number: 5173

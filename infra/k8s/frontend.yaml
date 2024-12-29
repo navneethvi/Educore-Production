@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: educore-frontend-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+      - name: frontend
+        image: navaneethvinod/educore-frontend:latest
+        envFrom:
+        - secretRef:
+            name: frontend-secrets
+        resources:
+          requests:
+            cpu: "100m"  
+            memory: "128Mi"  
+          limits:
+            cpu: "200m"  
+            memory: "256Mi"
+        ports:
+        - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-svc
+spec:
+  type: ClusterIP
+  selector:
+    app: frontend
+  ports:
+  - name: frontend
+    protocol: TCP
+    port: 5173
+    targetPort: 5173
