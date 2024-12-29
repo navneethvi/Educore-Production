@@ -27,7 +27,6 @@ app.post(
     console.log("Stripe Signature:", sig);
 
     try {
-console.log("in try blick");
 
       const event = stripe.webhooks.constructEvent(
         rawBody,

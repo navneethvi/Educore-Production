@@ -7,7 +7,7 @@ export class EmailService {
       const message = await transporter.sendMail({
         from: "navaneethvinod18@gmail.com",
         to: email,
-        subject: "Verify Your Account ✔",
+        subject: "Verify Your Account ✔...",
         text: `Hello,
 
 Your OTP for account verification is: ${otp}

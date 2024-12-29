@@ -22,7 +22,7 @@ app.use(
 );
 
 app.get("/", (req, res) => {
-  res.json("helloooo");
+  res.json("helloooo from chat");
 });
 
 app.use(express.json());

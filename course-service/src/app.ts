@@ -30,7 +30,7 @@ app.use(express.urlencoded({ limit: '900mb', extended: true }));
 
 // Routes setup
 app.get('/', (req, res) => {
-  res.json('helloooo');
+  res.json('helloooo from course');
 });
 app.use('/api/course', Router);
 
