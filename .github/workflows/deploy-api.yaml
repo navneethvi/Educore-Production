@@ -1,0 +1,30 @@
+name: deploy-auth
+
+on: 
+  push: 
+    branches: 
+       - main
+    paths:
+       - 'api-gateway/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps: 
+      - uses: actions/checkout@v3
+      - run: cd api-gateway && docker build -t navaneethvinod/educore-api-gateway .
+      - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+        env: 
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      - run: docker push navaneethvinod/educore-api-gateway:latest
+
+      - uses: digitalocean/action-doctl@v2
+      
+        with:
+          token: ${{ secrets.DIGITAL_OCEAN_ACCESS_TOKEN }}
+          
+      - run: doctl kubernetes cluster kubeconfig save k8s-1-31-1-do-5-blr1-1734852479838
+
+      - run: kubectl rollout restart deployment educore-api-depl
+            
