@@ -50,7 +50,7 @@ router.post("/google", studentController.googleSignin);
 router.post("/recover-account", studentController.recoverAccount);
 router.post("/verify-account", studentController.verifyOtpForAccRecovery);
 router.post("/update-password", studentController.updatePassword);
-router.patch("/:studentId/block",isAdminLogin(Admin), studentController.blockStudents);
+router.patch("/:studentId/block", studentController.blockStudents);
 
 //* Tutor Routes
 
@@ -64,7 +64,7 @@ router.post("/tutor/google", tutorController.googleSignin);
 router.post("/tutor/recover-account", tutorController.recoverAccount);
 router.post("/tutor/verify-account", tutorController.verifyOtpForAccRecovery);
 router.post("/tutor/update-password", tutorController.updatePassword);
-router.patch("/tutor/:tutorId/block",isAdminLogin(Admin), tutorController.blockTutors);
+router.patch("/tutor/:tutorId/block", tutorController.blockTutors);
 router.post("/tutor/fetch-tutor", tutorController.fetchTutorInfo)
 
 
