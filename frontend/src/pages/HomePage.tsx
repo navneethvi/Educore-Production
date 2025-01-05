@@ -47,7 +47,7 @@ const HomePage: React.FC = () => {
   if (error) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <div className="max-w-md w-full bg-white shadow-lg rounded-lg p-8 text-center">
+      <div className="max-w-md w-full bg-white rounded-lg p-8 text-center">
         <div className="w-64 h-64 mx-auto mb-8">
           <svg
             className="w-full h-full text-red-500"
